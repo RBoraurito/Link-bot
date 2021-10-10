@@ -1,0 +1,11 @@
+{
+  "name": "link-bot",
+  "version": "1.0.0",
+  "description": "A slack bot to add usefull links",
+  "main": "api/index.js",
+  "author": "RBoraurito",
+  "license": "MIT",
+  "dependencies": {
+    "@notionhq/client": "^0.4.2"
+  }
+}
