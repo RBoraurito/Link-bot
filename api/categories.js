@@ -7,9 +7,21 @@ const notion = new Client({
 
 async function getCategories() {
   const databaseId = 'cbd8aa4912484612850172850d093308';
-  const response = await notion.databases.query({ database_id: databaseId });
-  const categories = response.properties.Categories.select.options.map(el => el.name)
-  return categories
+  const response = await notion.databases.retrieve({ database_id: databaseId });
+  console.log(response);
+  const categories = response.properties.Categories.select.options.map(el => {
+    return {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        "text": `- ${el.name}`
+      }
+    }
+  })
+  return {
+      "response_type": "in_channel",
+      "blocks": categories
+  }
 }
 
 module.exports = async (req, res) => { // this function will be launched when the API is called.
