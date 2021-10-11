@@ -5,16 +5,22 @@ const notion = new Client({
   auth: process.env.NOTION_TOKEN,
 })
 
-async function getCategories() {
+async function getList() {
   const databaseId = 'cbd8aa4912484612850172850d093308';
   const response = await notion.databases.query({ database_id: databaseId });
-  const categories = response.properties.Categories.select.options.map(el => el.name)
-  return categories
+
+  const links = response.results
+  .map(el => {
+    const name = el.properties.Name.title[0].plain_text || ''
+    const link = el.properties.Link.url || ''
+    return `${name} - ${link}`
+  })
+  return links
 }
 
 module.exports = async (req, res) => { // this function will be launched when the API is called.
   try {
-    res.send(await getCategories()) // send the lyrics
+    res.send(await getList()) // send the lyrics
   } catch (err) {
     res.send(err) // send the thrown error
   }
